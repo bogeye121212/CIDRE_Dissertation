@@ -49,7 +49,7 @@ def clean_papers(bot = None,mid = None,top = None):
             maxInt = int(maxInt/10)
 
     # Store receiving and giving separately in dicts
-    df_rec_period, df_give_period = dict.fromkeys(["PaperID","JournalID"]), dict.fromkeys(["PaperID","JournalID"])
+    df_rec_period, df_give_period = dict.fromkeys(["paper_id","journal_id"]), dict.fromkeys(["paper_id","journal_id"])
     cnt_give_period,cnt_rec_period,totalcnt = 0, 0, 0
     bot_lab = dt.datetime.strptime('{}-01-01'.format(bot),'%Y-%m-%d')
     mid_lab = dt.datetime.strptime('{}-01-01'.format(mid),'%Y-%m-%d')
@@ -62,20 +62,20 @@ def clean_papers(bot = None,mid = None,top = None):
                     try:
                         paper_date = dt.datetime.strptime(row[24],'%Y-%m-%d')
                         if paper_date >= mid_lab and paper_date < top_lab and row[0] != '' and row[11] != '':
-                            if df_give_period["PaperID"] == None or df_give_period["JournalID"] == None:
-                                df_give_period["PaperID"] = [int(row[0])]
-                                df_give_period["JournalID"] = [int(row[11])]
+                            if df_give_period["paper_id"] == None or df_give_period["journal_id"] == None:
+                                df_give_period["paper_id"] = [int(row[0])]
+                                df_give_period["journal_id"] = [int(row[11])]
                             else:
-                                df_give_period["PaperID"].append(int(row[0]))
-                                df_give_period["JournalID"].append(int(row[11]))
+                                df_give_period["paper_id"].append(int(row[0]))
+                                df_give_period["journal_id"].append(int(row[11]))
                             cnt_give_period += 1
                         elif paper_date >= bot_lab and paper_date < mid_lab and row[0] != '' and row[11] != '':
-                            if df_rec_period["PaperID"] == None or df_rec_period["JournalID"] == None:
-                                df_rec_period["PaperID"] = [int(row[0])]
-                                df_rec_period["JournalID"] = [int(row[11])]
+                            if df_rec_period["paper_id"] == None or df_rec_period["journal_id"] == None:
+                                df_rec_period["paper_id"] = [int(row[0])]
+                                df_rec_period["journal_id"] = [int(row[11])]
                             else:
-                                df_rec_period["PaperID"].append(int(row[0]))
-                                df_rec_period["JournalID"].append(int(row[11]))
+                                df_rec_period["paper_id"].append(int(row[0]))
+                                df_rec_period["journal_id"].append(int(row[11]))
                             cnt_rec_period += 1
                     except IndexError:
                         pass
@@ -375,14 +375,9 @@ def halve_edges():
 
 
 if __name__ == "__main__":
-    #clean_journals()
-    #b, m = clean_papers(bot = sys.argv[1], mid = sys.argv[2], top = sys.argv[3])
-    #clean_refs(b,m)
-    #translate_refs(b,m)
-    #test_m(b,m)
-    #halve_edges()
-    for i in range(2000,2020):
-        temp = pd.read_csv("cartels-{}.csv".format(i),sep = "\t")
-        temp = temp[['node_id', 'group_id', 'mag_journal_id']].copy()
-        temp = temp.rename({"mag_journal_id":"journal_id"})
-        temp.to_csv("cartels-{}.csv".format(i),sep = "\t", index = False)
+    clean_journals()
+    b, m = clean_papers(bot = sys.argv[1], mid = sys.argv[2], top = sys.argv[3])
+    clean_refs(b,m)
+    translate_refs(b,m)
+    test_m(b,m)
+    halve_edges()
