@@ -10,6 +10,7 @@ import codecs
 import time
 import math
 
+
 def clean_journals():
     #Create the csv file that contains extra info about the journals but also the separate ID-Name csv file 
     data = list()
@@ -414,21 +415,21 @@ def test_m(b,m):
 
 def halve_edges():
     #Halve files in order to upload to GitHub
-    for i in range(2000,2020):
-        #temp = pd.read_csv("edges-{}.csv".format(i),sep = "\t")
+    for i in range(1999,2020):
+        temp = pd.read_csv("edges-{}.csv".format(i),sep = "\t")
         raw_temp = pd.read_csv("raw-edges-{}.csv".format(i),sep = "\t")
-        #split = math.floor(len(temp.index)/2)
+        split = math.floor(len(temp.index)/2)
         raw_split1 = math.floor(len(raw_temp.index)/4)
         raw_split2 = math.floor((2*len(raw_temp.index))/4)
         raw_split3 = math.floor((3*len(raw_temp.index))/4)
-        #df1 = temp.iloc[:split, :]
-        #df2 = temp.iloc[split:, :]
+        df1 = temp.iloc[:split, :]
+        df2 = temp.iloc[split:, :]
         raw_df1 = raw_temp.iloc[:raw_split1, :]
         raw_df2 = raw_temp.iloc[raw_split1:raw_split2, :]
         raw_df3 = raw_temp.iloc[raw_split2:raw_split3, :]
         raw_df4 = raw_temp.iloc[raw_split3:, :]
-        #df1.to_csv("edges-{}-1.csv".format(i),sep = "\t", index = False)
-        #df2.to_csv("edges-{}-2.csv".format(i),sep = "\t", index = False)
+        df1.to_csv("edges-{}-1.csv".format(i),sep = "\t", index = False)
+        df2.to_csv("edges-{}-2.csv".format(i),sep = "\t", index = False)
         raw_df1.to_csv("raw-edges-{}-1.csv".format(i),sep = "\t", index = False)
         raw_df2.to_csv("raw-edges-{}-2.csv".format(i),sep = "\t", index = False)
         raw_df3.to_csv("raw-edges-{}-3.csv".format(i),sep = "\t", index = False)
@@ -436,10 +437,13 @@ def halve_edges():
 
 
 if __name__ == "__main__":
+    # Uncomment the required methods for cleaning
+
     #clean_journals()
     #b, m = clean_papers(bot = sys.argv[1], mid1 = sys.argv[2], mid2 = sys.argv[3], top = sys.argv[4])
     #clean_refs(b,m)
     #translate_refs(b,m)
     #test_m(b,m)
-    halve_edges()
+    #halve_edges()
     #clean_papersII()
+    pass
